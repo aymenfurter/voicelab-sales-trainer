@@ -1,5 +1,5 @@
 <p align="center">
-  <h1 align="center">🎯 VoiceLab Sales Trainer</h1>
+  <h1 align="center">VoiceLab Sales Trainer</h1>
 </p>
 <p align="center">AI-powered voice training for sales professionals, built on Azure.</p>
 <p align="center">
@@ -12,11 +12,11 @@
 
 ---
 
-## 🚀 Overview
+## Overview
 
 VoiceLab Sales Trainer is a demo application showcasing how AI-based training could be used in sales education using Azure AI services. Practice real-world sales scenarios with AI-powered virtual customers, receive instant feedback on your performance, and improve your sales skills through immersive voice conversations.
 
-### ✨ Features
+### Features
 
 - **Real-time Voice Conversations** - Practice sales calls with AI agents that respond naturally using Azure Voice Live API
 - **Performance Analysis** - Get detailed feedback on your conversation skills
@@ -25,7 +25,7 @@ VoiceLab Sales Trainer is a demo application showcasing how AI-based training co
 
 ![Performance Analysis Dashboard](assets/analysis.png)
 
-## 🛠️ Technology Stack
+### Tech Stack
 
 - **Azure AI Foundry** - Agent orchestration and management
 - **Azure OpenAI** - GPT-4o for LLM responses and performance analysis 
@@ -34,7 +34,7 @@ VoiceLab Sales Trainer is a demo application showcasing how AI-based training co
 - **React + Fluent UI** - Modern, accessible user interface
 - **Python Flask** - Backend API and WebSocket handling
 
-## 🔧 Installation
+## Installation
 
 1. **Clone the repository**
    ```bash
@@ -69,7 +69,7 @@ VoiceLab Sales Trainer is a demo application showcasing how AI-based training co
 
 Visit `http://localhost:8000` to start training!
 
-## 🎮 How It Works
+## How It Works
 
 1. **Choose a Scenario** - Select from various sales situations (cold calling, objection handling, etc.)
 2. **Start the Conversation** - Click the microphone and begin your sales pitch
@@ -80,3 +80,11 @@ Visit `http://localhost:8000` to start training!
    - Needs assessment
    - Value proposition delivery
    - Objection handling skills
+  
+## 🤝 Contributing
+
+This is a demo application showcasing Azure AI capabilities. Feel free to fork and experiment!
+
+## 📄 License
+
+MIT License - See [LICENSE](LICENSE) file for details
