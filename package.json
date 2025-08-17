@@ -1,0 +1,29 @@
+{
+  "name": "upskilling-agent",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "lint": "./lint.sh",
+    "format": "./format.sh",
+    "test": "python -m pytest",
+    "test:coverage": "python -m pytest --cov=app --cov-report=term-missing",
+    "test:watch": "python -m pytest --watch"
+  },
+  "dependencies": {
+    "@fluentui/react": "^8.123.4",
+    "@fluentui/react-components": "^9.68.3",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^5.0.0",
+    "typescript": "^5.9.2",
+    "vite": "^7.1.2"
+  }
+}
