@@ -81,10 +81,10 @@ Visit `http://localhost:8000` to start training!
    - Value proposition delivery
    - Objection handling skills
   
-## 🤝 Contributing
+## Contributing
 
 This is a demo application showcasing Azure AI capabilities. Feel free to fork and experiment!
 
-## 📄 License
+## License
 
 MIT License - See [LICENSE](LICENSE) file for details
