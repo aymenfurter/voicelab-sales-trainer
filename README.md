@@ -69,6 +69,40 @@ VoiceLab Sales Trainer is a demo application showcasing how AI-based training co
 
 Visit `http://localhost:8000` to start training!
 
+## Development
+
+### Code Quality & Linting
+
+This project uses linting tools to maintain code quality:
+
+- **Python**: flake8 and black for linting and formatting
+- **TypeScript**: ESLint and Prettier for linting and formatting
+
+#### Available Scripts
+
+```bash
+# Run linters
+npm run lint
+
+# Format code
+npm run format
+
+# Run tests
+npm run test
+```
+
+#### Manual Linting
+
+```bash
+# Python linting
+flake8 . --config=.flake8
+black . --config pyproject.toml
+
+# TypeScript linting
+npx eslint . --ext .ts,.tsx
+npx prettier --write "src/**/*.{ts,tsx,js,jsx,json,css,md}"
+```
+
 ## How It Works
 
 1. **Choose a Scenario** - Select from various sales situations (cold calling, objection handling, etc.)

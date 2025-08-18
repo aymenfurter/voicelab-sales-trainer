@@ -157,7 +157,9 @@ class ConversationAnalyzer:
             logger.error(f"Error in evaluation model: {e}")
             return None
 
-    def _build_evaluation_prompt(self, scenario: Dict[str, Any], transcript: str) -> str:
+    def _build_evaluation_prompt(
+        self, scenario: Dict[str, Any], transcript: str
+    ) -> str:
         """Build the evaluation prompt."""
         base_prompt = scenario["messages"][0]["content"]
         return f"""{base_prompt}
@@ -253,22 +255,30 @@ class ConversationAnalyzer:
             },
         }
 
-    def _process_evaluation_result(self, evaluation_json: Dict[str, Any]) -> Dict[str, Any]:
+    def _process_evaluation_result(
+        self, evaluation_json: Dict[str, Any]
+    ) -> Dict[str, Any]:
         """Process and validate evaluation results."""
         # Recalculate totals to ensure accuracy
-        evaluation_json["speaking_tone_style"]["total"] = sum([
-            evaluation_json["speaking_tone_style"]["professional_tone"],
-            evaluation_json["speaking_tone_style"]["active_listening"],
-            evaluation_json["speaking_tone_style"]["engagement_quality"],
-        ])
+        evaluation_json["speaking_tone_style"]["total"] = sum(
+            [
+                evaluation_json["speaking_tone_style"]["professional_tone"],
+                evaluation_json["speaking_tone_style"]["active_listening"],
+                evaluation_json["speaking_tone_style"]["engagement_quality"],
+            ]
+        )
 
-        evaluation_json["conversation_content"]["total"] = sum([
-            evaluation_json["conversation_content"]["needs_assessment"],
-            evaluation_json["conversation_content"]["value_proposition"],
-            evaluation_json["conversation_content"]["objection_handling"],
-        ])
+        evaluation_json["conversation_content"]["total"] = sum(
+            [
+                evaluation_json["conversation_content"]["needs_assessment"],
+                evaluation_json["conversation_content"]["value_proposition"],
+                evaluation_json["conversation_content"]["objection_handling"],
+            ]
+        )
 
-        logger.info(f"Evaluation processed with score: {evaluation_json.get('overall_score')}")
+        logger.info(
+            f"Evaluation processed with score: {evaluation_json.get('overall_score')}"
+        )
         return evaluation_json
 
 
@@ -376,9 +386,7 @@ class PronunciationAssessor:
 
         # Create recognizer and apply configuration
         speech_recognizer = speechsdk.SpeechRecognizer(
-            speech_config=speech_config,
-            audio_config=audio_config,
-            language="en-US"
+            speech_config=speech_config, audio_config=audio_config, language="en-US"
         )
         pronunciation_config.apply_to(speech_recognizer)
 
@@ -413,15 +421,17 @@ class PronunciationAssessor:
             words = []
             if "NBest" in json_result and json_result["NBest"]:
                 for word_info in json_result["NBest"][0].get("Words", []):
-                    words.append({
-                        "word": word_info.get("Word", ""),
-                        "accuracy": word_info.get("PronunciationAssessment", {}).get(
-                            "AccuracyScore", 0
-                        ),
-                        "error_type": word_info.get("PronunciationAssessment", {}).get(
-                            "ErrorType", "None"
-                        ),
-                    })
+                    words.append(
+                        {
+                            "word": word_info.get("Word", ""),
+                            "accuracy": word_info.get(
+                                "PronunciationAssessment", {}
+                            ).get("AccuracyScore", 0),
+                            "error_type": word_info.get(
+                                "PronunciationAssessment", {}
+                            ).get("ErrorType", "None"),
+                        }
+                    )
 
             return words
         except Exception as e:

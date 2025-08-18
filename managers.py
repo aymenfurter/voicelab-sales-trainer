@@ -14,12 +14,14 @@ from config import config
 # Conditionally import Azure AI Projects SDK
 try:
     from azure.ai.projects import AIProjectClient
-    from azure.ai.agents.models import CodeInterpreterTool
+
     AZURE_AI_AGENTS_AVAILABLE = True
 except ImportError:
     AZURE_AI_AGENTS_AVAILABLE = False
     logger = logging.getLogger(__name__)
-    logger.warning("Azure AI Projects SDK not available - using instruction-based approach only")
+    logger.warning(
+        "Azure AI Projects SDK not available - using instruction-based approach only"
+    )
 
 logger = logging.getLogger(__name__)
 
@@ -59,7 +61,9 @@ class ScenarioManager:
         Args:
             scenario_dir: Directory containing scenario YAML files
         """
-        self.scenario_dir = scenario_dir or Path("/workspaces/upskilling-agent/scenarios")
+        self.scenario_dir = scenario_dir or Path(
+            "/workspaces/upskilling-agent/scenarios"
+        )
         self.scenarios = self._load_scenarios()
 
     def _load_scenarios(self) -> Dict[str, Any]:
@@ -111,7 +115,7 @@ class ScenarioManager:
             {
                 "id": scenario_id,
                 "name": scenario_data.get("name", "Unknown"),
-                "description": scenario_data.get("description", "")
+                "description": scenario_data.get("description", ""),
             }
             for scenario_id, scenario_data in self.scenarios.items()
         ]
@@ -138,31 +142,37 @@ CRITICAL INTERACTION GUIDELINES:
         """Initialize the agent manager."""
         self.agents = {}
         self.credential = DefaultAzureCredential()
-        self.use_azure_ai_agents = config["use_azure_ai_agents"] and AZURE_AI_AGENTS_AVAILABLE
+        self.use_azure_ai_agents = (
+            config["use_azure_ai_agents"] and AZURE_AI_AGENTS_AVAILABLE
+        )
         self.project_client = None
-        
+
         if self.use_azure_ai_agents:
             self.project_client = self._initialize_project_client()
             logger.info("AgentManager initialized with Azure AI Agent Service support")
         else:
             logger.info("AgentManager initialized with instruction-based approach only")
 
-    def _initialize_project_client(self) -> Optional['AIProjectClient']:
+    def _initialize_project_client(self) -> Optional["AIProjectClient"]:
         """Initialize the Azure AI Project client."""
         if not AZURE_AI_AGENTS_AVAILABLE:
             return None
-            
+
         try:
             project_endpoint = config["project_endpoint"]
             if not project_endpoint:
-                logger.warning("PROJECT_ENDPOINT not configured - falling back to instruction-based approach")
+                logger.warning(
+                    "PROJECT_ENDPOINT not configured - falling back to instruction-based approach"
+                )
                 return None
 
             client = AIProjectClient(
                 endpoint=project_endpoint,
                 credential=self.credential,
             )
-            logger.info(f"AI Project client initialized with endpoint: {project_endpoint}")
+            logger.info(
+                f"AI Project client initialized with endpoint: {project_endpoint}"
+            )
             return client
         except Exception as e:
             logger.error(f"Failed to initialize AI Project client: {e}")
@@ -183,7 +193,9 @@ CRITICAL INTERACTION GUIDELINES:
             Exception: If agent creation fails
         """
         # Combine base instructions with scenario-specific instructions
-        scenario_instructions = scenario_data.get("messages", [{}])[0].get("content", "")
+        scenario_instructions = scenario_data.get("messages", [{}])[0].get(
+            "content", ""
+        )
         combined_instructions = scenario_instructions + self.BASE_INSTRUCTIONS
 
         # Get model configuration
@@ -203,7 +215,12 @@ CRITICAL INTERACTION GUIDELINES:
             )
 
     def _create_azure_agent(
-        self, scenario_id: str, instructions: str, model: str, temperature: float, max_tokens: int
+        self,
+        scenario_id: str,
+        instructions: str,
+        model: str,
+        temperature: float,
+        max_tokens: int,
     ) -> str:
         """Create an agent using Azure AI Agent Service."""
         try:
@@ -238,7 +255,12 @@ CRITICAL INTERACTION GUIDELINES:
             raise
 
     def _create_local_agent(
-        self, scenario_id: str, instructions: str, model: str, temperature: float, max_tokens: int
+        self,
+        scenario_id: str,
+        instructions: str,
+        model: str,
+        temperature: float,
+        max_tokens: int,
     ) -> str:
         """Create a local agent configuration without Azure AI Agent Service."""
         try:
@@ -285,7 +307,7 @@ CRITICAL INTERACTION GUIDELINES:
         try:
             if agent_id in self.agents:
                 agent_config = self.agents[agent_id]
-                
+
                 # Only delete from Azure if it's an Azure-created agent
                 if agent_config.get("is_azure_agent") and self.project_client:
                     try:
@@ -294,7 +316,7 @@ CRITICAL INTERACTION GUIDELINES:
                             logger.info(f"Deleted Azure AI agent: {agent_id}")
                     except Exception as e:
                         logger.error(f"Error deleting Azure agent: {e}")
-                
+
                 # Remove from local storage
                 del self.agents[agent_id]
                 logger.info(f"Deleted agent from local storage: {agent_id}")

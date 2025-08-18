@@ -36,9 +36,7 @@ def index():
 @app.route("/api/config")
 def get_config():
     """Get client configuration."""
-    return jsonify(
-        {"proxy_enabled": True, "ws_endpoint": "/ws/voice"}
-    )
+    return jsonify({"proxy_enabled": True, "ws_endpoint": "/ws/voice"})
 
 
 @app.route("/api/scenarios")
@@ -71,9 +69,7 @@ def create_agent():
 
     try:
         agent_id = agent_manager.create_agent(scenario_id, scenario)
-        return jsonify(
-            {"agent_id": agent_id, "scenario_id": scenario_id}
-        )
+        return jsonify({"agent_id": agent_id, "scenario_id": scenario_id})
     except Exception as e:
         logger.error(f"Failed to create agent: {e}")
         return jsonify({"error": str(e)}), 500

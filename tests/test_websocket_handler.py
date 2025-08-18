@@ -20,64 +20,58 @@ class TestVoiceProxyHandler:
         assert handler.token_manager == token_manager
         assert handler.agent_manager == agent_manager
 
-    @patch('websocket_handler.config')
+    @patch("websocket_handler.config")
     def test_build_azure_url_with_azure_agent(self, mock_config):
         """Test building Azure URL with Azure agent configuration."""
         mock_config.__getitem__.side_effect = lambda key: {
             "azure_ai_resource_name": "test-resource",
-            "azure_ai_project_name": "test-project"
+            "azure_ai_project_name": "test-project",
         }.get(key, "default")
-        
+
         handler = VoiceProxyHandler(Mock(), Mock())
-        agent_config = {
-            "is_azure_agent": True,
-            "model": "gpt-4o"
-        }
-        
+        agent_config = {"is_azure_agent": True, "model": "gpt-4o"}
+
         url = handler._build_azure_url("test-token", "agent-123", agent_config)
-        
+
         assert "agent_id=agent-123" in url
         assert "test-resource" in url
         assert "test-project" in url
 
-    @patch('websocket_handler.config')
+    @patch("websocket_handler.config")
     def test_build_azure_url_with_local_agent(self, mock_config):
         """Test building Azure URL with local agent configuration."""
         mock_config.__getitem__.side_effect = lambda key: {
             "azure_ai_resource_name": "test-resource",
             "azure_ai_project_name": "test-project",
-            "model_deployment_name": "gpt-4o"
+            "model_deployment_name": "gpt-4o",
         }.get(key, "default")
-        
+
         handler = VoiceProxyHandler(Mock(), Mock())
-        agent_config = {
-            "is_azure_agent": False,
-            "model": "gpt-4"
-        }
-        
+        agent_config = {"is_azure_agent": False, "model": "gpt-4"}
+
         url = handler._build_azure_url("test-token", "local-agent-123", agent_config)
-        
+
         assert "model=gpt-4" in url
         assert "agent_id=" not in url or "agent_id=&" in url
         assert "test-resource" in url
 
-    @patch('websocket_handler.config')
+    @patch("websocket_handler.config")
     def test_build_azure_url_without_agent_config(self, mock_config):
         """Test building Azure URL without agent configuration."""
         mock_config.__getitem__.side_effect = lambda key: {
             "azure_ai_resource_name": "test-resource",
             "azure_ai_project_name": "test-project",
-            "agent_id": "static-agent-123"
+            "agent_id": "static-agent-123",
         }.get(key, "default")
-        
+
         handler = VoiceProxyHandler(Mock(), Mock())
-        
+
         url = handler._build_azure_url("test-token", None, None)
-        
+
         assert "agent_id=static-agent-123" in url
         assert "test-resource" in url
 
-    @patch('websocket_handler.config')
+    @patch("websocket_handler.config")
     @pytest.mark.asyncio
     async def test_send_initial_config_with_agent(self, mock_config):
         """Test sending initial configuration with agent config."""
@@ -94,7 +88,7 @@ class TestVoiceProxyHandler:
             "model": "gpt-4",
             "instructions": "Test instructions",
             "temperature": 0.8,
-            "max_tokens": 1000
+            "max_tokens": 1000,
         }
 
         await handler._send_initial_config(mock_azure_ws, agent_config)
@@ -138,7 +132,7 @@ class TestVoiceProxyHandler:
         # Mock WebSocket with executor
         mock_ws = Mock()
 
-        with patch('asyncio.get_event_loop') as mock_loop:
+        with patch("asyncio.get_event_loop") as mock_loop:
             mock_loop.return_value.run_in_executor = AsyncMock(return_value=None)
 
             message = {"type": "test", "data": "test data"}

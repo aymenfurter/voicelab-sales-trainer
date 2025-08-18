@@ -5,7 +5,7 @@ const useStyles = makeStyles({
   card: {
     width: '400px',
     height: '100%',
-    padding: tokens.spacingVerticalM
+    padding: tokens.spacingVerticalM,
   },
   videoContainer: {
     width: '100%',
@@ -13,13 +13,13 @@ const useStyles = makeStyles({
     backgroundColor: tokens.colorNeutralBackground1,
     borderRadius: tokens.borderRadiusMedium,
     overflow: 'hidden',
-    position: 'relative'
+    position: 'relative',
   },
   video: {
     width: '100%',
     height: '100%',
-    objectFit: 'cover'
-  }
+    objectFit: 'cover',
+  },
 })
 
 interface Props {
@@ -32,12 +32,7 @@ export function VideoPanel({ videoRef }: Props) {
   return (
     <Card className={styles.card}>
       <div className={styles.videoContainer}>
-        <video
-          ref={videoRef}
-          className={styles.video}
-          autoPlay
-          playsInline
-        />
+        <video ref={videoRef} className={styles.video} autoPlay playsInline />
       </div>
     </Card>
   )

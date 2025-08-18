@@ -15,7 +15,7 @@ export const api = {
     const res = await fetch('/api/agents/create', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ scenario_id: scenarioId })
+      body: JSON.stringify({ scenario_id: scenarioId }),
     })
     if (!res.ok) throw new Error('Failed to create agent')
     return res.json()
@@ -32,10 +32,10 @@ export const api = {
       body: JSON.stringify({
         scenario_id: scenarioId,
         transcript,
-        audio_data: audioData
-      })
+        audio_data: audioData,
+      }),
     })
     if (!res.ok) throw new Error('Analysis failed')
     return res.json()
-  }
+  },
 }

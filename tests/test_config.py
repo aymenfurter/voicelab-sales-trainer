@@ -19,12 +19,15 @@ class TestConfig:
 
     def test_config_with_environment_variables(self):
         """Test that config loads from environment variables."""
-        with patch.dict(os.environ, {
-            "PORT": "9000",
-            "HOST": "localhost",
-            "AZURE_AI_REGION": "westus",
-            "AZURE_AI_RESOURCE_NAME": "test-resource"
-        }):
+        with patch.dict(
+            os.environ,
+            {
+                "PORT": "9000",
+                "HOST": "localhost",
+                "AZURE_AI_REGION": "westus",
+                "AZURE_AI_RESOURCE_NAME": "test-resource",
+            },
+        ):
             config = Config()
             assert config["port"] == 9000
             assert config["host"] == "localhost"

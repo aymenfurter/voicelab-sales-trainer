@@ -29,35 +29,35 @@ class TestConversationAnalyzer:
             # Create a test evaluation scenario file
             scenario_data = {
                 "name": "Test Evaluation",
-                "messages": [{"content": "Evaluate this conversation"}]
+                "messages": [{"content": "Evaluate this conversation"}],
             }
 
             scenario_file = scenario_dir / "test-scenario-evaluation.prompt.yml"
-            with open(scenario_file, 'w') as f:
+            with open(scenario_file, "w") as f:
                 yaml.safe_dump(scenario_data, f)
 
             analyzer = ConversationAnalyzer(scenario_dir=scenario_dir)
             assert len(analyzer.evaluation_scenarios) == 1
             assert "test-scenario" in analyzer.evaluation_scenarios
 
-    @patch('analyzers.config')
+    @patch("analyzers.config")
     def test_initialize_openai_client_missing_config(self, mock_config):
         """Test OpenAI client initialization with missing config."""
         mock_config.__getitem__.side_effect = lambda key: {
             "azure_openai_endpoint": "",
-            "azure_openai_api_key": ""
+            "azure_openai_api_key": "",
         }.get(key, "")
 
         analyzer = ConversationAnalyzer()
         assert analyzer.openai_client is None
 
-    @patch('analyzers.AzureOpenAI')
-    @patch('analyzers.config')
+    @patch("analyzers.AzureOpenAI")
+    @patch("analyzers.config")
     def test_initialize_openai_client_success(self, mock_config, mock_azure_openai):
         """Test successful OpenAI client initialization."""
         mock_config.__getitem__.side_effect = lambda key: {
             "azure_openai_endpoint": "https://test.openai.azure.com",
-            "azure_openai_api_key": "test-key"
+            "azure_openai_api_key": "test-key",
         }.get(key, "")
 
         analyzer = ConversationAnalyzer()
@@ -107,18 +107,18 @@ class TestConversationAnalyzer:
                 "professional_tone": 8,
                 "active_listening": 7,
                 "engagement_quality": 9,
-                "total": 0  # Will be recalculated
+                "total": 0,  # Will be recalculated
             },
             "conversation_content": {
                 "needs_assessment": 20,
                 "value_proposition": 18,
                 "objection_handling": 15,
-                "total": 0  # Will be recalculated
+                "total": 0,  # Will be recalculated
             },
             "overall_score": 77,
             "strengths": ["Good engagement"],
             "improvements": ["Better needs assessment"],
-            "specific_feedback": "Overall good performance"
+            "specific_feedback": "Overall good performance",
         }
 
         result = analyzer._process_evaluation_result(evaluation_json)
@@ -135,8 +135,8 @@ class TestPronunciationAssessor:
         """Test assessor initialization."""
         assessor = PronunciationAssessor()
         # Test that it initializes with config values
-        assert hasattr(assessor, 'speech_key')
-        assert hasattr(assessor, 'speech_region')
+        assert hasattr(assessor, "speech_key")
+        assert hasattr(assessor, "speech_region")
 
     @pytest.mark.asyncio
     async def test_assess_pronunciation_no_speech_key(self):
@@ -161,7 +161,7 @@ class TestPronunciationAssessor:
 
         # Create test audio data
         test_audio = b"test audio data"
-        encoded_audio = base64.b64encode(test_audio).decode('utf-8')
+        encoded_audio = base64.b64encode(test_audio).decode("utf-8")
 
         audio_data = [
             {"type": "user", "data": encoded_audio},
@@ -199,24 +199,26 @@ class TestPronunciationAssessor:
         # Mock result with word data
         mock_result = Mock()
         test_response = {
-            "NBest": [{
-                "Words": [
-                    {
-                        "Word": "hello",
-                        "PronunciationAssessment": {
-                            "AccuracyScore": 85,
-                            "ErrorType": "None"
-                        }
-                    },
-                    {
-                        "Word": "world",
-                        "PronunciationAssessment": {
-                            "AccuracyScore": 90,
-                            "ErrorType": "None"
-                        }
-                    }
-                ]
-            }]
+            "NBest": [
+                {
+                    "Words": [
+                        {
+                            "Word": "hello",
+                            "PronunciationAssessment": {
+                                "AccuracyScore": 85,
+                                "ErrorType": "None",
+                            },
+                        },
+                        {
+                            "Word": "world",
+                            "PronunciationAssessment": {
+                                "AccuracyScore": 90,
+                                "ErrorType": "None",
+                            },
+                        },
+                    ]
+                }
+            ]
         }
         mock_result.properties.get.return_value = json.dumps(test_response)
 
