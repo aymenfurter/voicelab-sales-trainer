@@ -8,7 +8,8 @@ export function useScenarios() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    api.getScenarios()
+    api
+      .getScenarios()
       .then(setScenarios)
       .finally(() => setLoading(false))
   }, [])
@@ -17,6 +18,6 @@ export function useScenarios() {
     scenarios,
     selectedScenario,
     setSelectedScenario,
-    loading
+    loading,
   }
 }

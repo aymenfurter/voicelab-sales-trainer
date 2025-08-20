@@ -4,7 +4,7 @@ import {
   Text,
   makeStyles,
   tokens,
-  Button
+  Button,
 } from '@fluentui/react-components'
 import { Scenario } from '../types'
 
@@ -13,10 +13,10 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'column',
     gap: tokens.spacingVerticalM,
-    width: '100%'
+    width: '100%',
   },
   header: {
-    gridColumn: '1 / -1'
+    gridColumn: '1 / -1',
   },
   cardsGrid: {
     display: 'grid',
@@ -25,26 +25,26 @@ const useStyles = makeStyles({
     gridColumn: '1 / span 2',
     width: '100%',
     '@media (max-width: 600px)': {
-      gridTemplateColumns: '1fr'
-    }
+      gridTemplateColumns: '1fr',
+    },
   },
   card: {
     cursor: 'pointer',
     transition: 'all 0.2s',
     '&:hover': {
       transform: 'translateY(-2px)',
-      boxShadow: tokens.shadow16
-    }
+      boxShadow: tokens.shadow16,
+    },
   },
   selected: {
-    backgroundColor: tokens.colorBrandBackground2
+    backgroundColor: tokens.colorBrandBackground2,
   },
   actions: {
     gridColumn: '1 / -1',
     display: 'flex',
     justifyContent: 'flex-end',
-    marginTop: tokens.spacingVerticalL
-  }
+    marginTop: tokens.spacingVerticalL,
+  },
 })
 
 interface Props {
@@ -54,12 +54,19 @@ interface Props {
   onStart: () => void
 }
 
-export function ScenarioList({ scenarios, selectedScenario, onSelect, onStart }: Props) {
+export function ScenarioList({
+  scenarios,
+  selectedScenario,
+  onSelect,
+  onStart,
+}: Props) {
   const styles = useStyles()
 
   return (
     <>
-      <Text className={styles.header} size={500} weight="semibold">Select Training Scenario</Text>
+      <Text className={styles.header} size={500} weight="semibold">
+        Select Training Scenario
+      </Text>
       <div className={styles.cardsGrid}>
         {scenarios.map(scenario => (
           <Card

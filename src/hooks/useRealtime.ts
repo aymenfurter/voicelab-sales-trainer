@@ -18,19 +18,23 @@ export function useRealtime(options: RealtimeOptions) {
   const connect = useCallback(async () => {
     const config = await fetch('/api/config').then(r => r.json())
     const protocol = location.protocol === 'https:' ? 'wss:' : 'ws:'
-    const ws = new WebSocket(`${protocol}//${location.host}${config.ws_endpoint}`)
-    
+    const ws = new WebSocket(
+      `${protocol}//${location.host}${config.ws_endpoint}`
+    )
+
     ws.onopen = () => {
       setConnected(true)
       if (options.agentId) {
-        ws.send(JSON.stringify({
-          type: 'session.update',
-          session: { agent_id: options.agentId }
-        }))
+        ws.send(
+          JSON.stringify({
+            type: 'session.update',
+            session: { agent_id: options.agentId },
+          })
+        )
       }
     }
 
-    ws.onmessage = (event) => {
+    ws.onmessage = event => {
       const msg = JSON.parse(event.data)
       options.onMessage?.(msg)
 
@@ -41,7 +45,7 @@ export function useRealtime(options: RealtimeOptions) {
             audioRecording.current.push({
               type: 'assistant',
               data: msg.delta,
-              timestamp: new Date().toISOString()
+              timestamp: new Date().toISOString(),
             })
           }
           break
@@ -51,12 +55,12 @@ export function useRealtime(options: RealtimeOptions) {
               id: crypto.randomUUID(),
               role: 'user',
               content: msg.transcript,
-              timestamp: new Date()
+              timestamp: new Date(),
             }
             setMessages(prev => [...prev, message])
             conversationRecording.current.push({
               role: 'user',
-              content: msg.transcript
+              content: msg.transcript,
             })
             options.onTranscript?.('user', msg.transcript)
           }
@@ -67,12 +71,12 @@ export function useRealtime(options: RealtimeOptions) {
               id: crypto.randomUUID(),
               role: 'assistant',
               content: msg.transcript,
-              timestamp: new Date()
+              timestamp: new Date(),
             }
             setMessages(prev => [...prev, message])
             conversationRecording.current.push({
               role: 'assistant',
-              content: msg.transcript
+              content: msg.transcript,
             })
             options.onTranscript?.('assistant', msg.transcript)
           }
@@ -96,10 +100,13 @@ export function useRealtime(options: RealtimeOptions) {
     audioRecording.current = []
   }, [])
 
-  const getRecordings = useCallback(() => ({
-    conversation: conversationRecording.current,
-    audio: audioRecording.current
-  }), [])
+  const getRecordings = useCallback(
+    () => ({
+      conversation: conversationRecording.current,
+      audio: audioRecording.current,
+    }),
+    []
+  )
 
   useEffect(() => {
     connect()
@@ -111,6 +118,6 @@ export function useRealtime(options: RealtimeOptions) {
     messages,
     send,
     clearMessages,
-    getRecordings
+    getRecordings,
   }
 }

@@ -42,9 +42,11 @@ export function useRecorder(onAudioChunk: (base64: string) => void) {
 
   const initAudio = useCallback(async () => {
     if (audioCtxRef.current) return
-    
+
     const audioCtx = new AudioContext({ sampleRate: 24000 })
-    const blob = new Blob([audioProcessorCode], { type: 'application/javascript' })
+    const blob = new Blob([audioProcessorCode], {
+      type: 'application/javascript',
+    })
     const url = URL.createObjectURL(blob)
     await audioCtx.audioWorklet.addModule(url)
     URL.revokeObjectURL(url)
@@ -54,7 +56,7 @@ export function useRecorder(onAudioChunk: (base64: string) => void) {
   const startRecording = useCallback(async () => {
     await initAudio()
     const audioCtx = audioCtxRef.current!
-    
+
     if (audioCtx.state === 'suspended') {
       await audioCtx.resume()
     }
@@ -63,25 +65,27 @@ export function useRecorder(onAudioChunk: (base64: string) => void) {
       audio: {
         channelCount: 1,
         sampleRate: 24000,
-        echoCancellation: true
-      }
+        echoCancellation: true,
+      },
     })
 
     const source = audioCtx.createMediaStreamSource(stream)
     const worklet = new AudioWorkletNode(audioCtx, 'audio-recorder')
-    
-    worklet.port.onmessage = (e) => {
+
+    worklet.port.onmessage = e => {
       if (e.data.eventType === 'audio') {
         const float32 = e.data.audioData
         const int16 = new Int16Array(float32.length)
         for (let i = 0; i < float32.length; i++) {
           int16[i] = Math.max(-32768, Math.min(32767, float32[i] * 32767))
         }
-        const base64 = btoa(String.fromCharCode(...new Uint8Array(int16.buffer)))
+        const base64 = btoa(
+          String.fromCharCode(...new Uint8Array(int16.buffer))
+        )
         audioRecording.current.push({
           type: 'user',
           data: base64,
-          timestamp: new Date().toISOString()
+          timestamp: new Date().toISOString(),
         })
         onAudioChunk(base64)
       }
@@ -90,7 +94,7 @@ export function useRecorder(onAudioChunk: (base64: string) => void) {
     source.connect(worklet)
     worklet.connect(audioCtx.destination)
     worklet.port.postMessage({ command: 'START' })
-    
+
     workletRef.current = worklet
     setRecording(true)
   }, [onAudioChunk, initAudio])
@@ -117,6 +121,6 @@ export function useRecorder(onAudioChunk: (base64: string) => void) {
   return {
     recording,
     toggleRecording,
-    getAudioRecording
+    getAudioRecording,
   }
 }

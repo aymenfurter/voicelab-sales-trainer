@@ -21,7 +21,8 @@ class Config:
             "azure_ai_region": os.getenv("AZURE_AI_REGION", "eastus2"),
             "azure_ai_project_name": os.getenv("AZURE_AI_PROJECT_NAME", ""),
             "project_endpoint": os.getenv("PROJECT_ENDPOINT", ""),
-            "use_azure_ai_agents": os.getenv("USE_AZURE_AI_AGENTS", "false").lower() == "true",
+            "use_azure_ai_agents": os.getenv("USE_AZURE_AI_AGENTS", "false").lower()
+            == "true",
             "agent_id": os.getenv("AGENT_ID", ""),
             "port": int(os.getenv("PORT", "8000")),
             "host": os.getenv("HOST", "0.0.0.0"),

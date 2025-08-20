@@ -2,11 +2,15 @@ import {
   Card,
   Button,
   Text,
-  Badge,
   makeStyles,
-  tokens
+  tokens,
 } from '@fluentui/react-components'
-import { MicRegular, MicOffRegular, DeleteRegular, ChartMultipleRegular } from '@fluentui/react-icons'
+import {
+  MicRegular,
+  MicOffRegular,
+  DeleteRegular,
+  ChartMultipleRegular,
+} from '@fluentui/react-icons'
 import { Message, Scenario } from '../types'
 
 const useStyles = makeStyles({
@@ -14,16 +18,16 @@ const useStyles = makeStyles({
     flex: 1,
     display: 'flex',
     flexDirection: 'column',
-    padding: tokens.spacingVerticalM
+    padding: tokens.spacingVerticalM,
   },
   header: {
     marginBottom: tokens.spacingVerticalM,
     display: 'flex',
     flexDirection: 'column',
-    gap: tokens.spacingVerticalXS
+    gap: tokens.spacingVerticalXS,
   },
   headerDescription: {
-    color: tokens.colorNeutralForeground3
+    color: tokens.colorNeutralForeground3,
   },
   messages: {
     flex: 1,
@@ -31,7 +35,7 @@ const useStyles = makeStyles({
     border: `1px solid ${tokens.colorNeutralStroke1}`,
     borderRadius: tokens.borderRadiusMedium,
     padding: tokens.spacingVerticalM,
-    marginBottom: tokens.spacingVerticalM
+    marginBottom: tokens.spacingVerticalM,
   },
   placeholder: {
     height: '100%',
@@ -39,32 +43,32 @@ const useStyles = makeStyles({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    color: tokens.colorNeutralForeground3
+    color: tokens.colorNeutralForeground3,
   },
   message: {
     padding: tokens.spacingVerticalS,
     marginBottom: tokens.spacingVerticalS,
-    borderRadius: tokens.borderRadiusMedium
+    borderRadius: tokens.borderRadiusMedium,
   },
   userMessage: {
     backgroundColor: tokens.colorBrandBackground2,
-    marginLeft: '20%'
+    marginLeft: '20%',
   },
   assistantMessage: {
     backgroundColor: tokens.colorNeutralBackground2,
-    marginRight: '20%'
+    marginRight: '20%',
   },
   controls: {
     display: 'flex',
     gap: tokens.spacingHorizontalM,
-    flexWrap: 'wrap'
+    flexWrap: 'wrap',
   },
   status: {
     display: 'flex',
     alignItems: 'center',
     gap: tokens.spacingHorizontalS,
-    marginTop: tokens.spacingVerticalS
-  }
+    marginTop: tokens.spacingVerticalS,
+  },
 })
 
 interface Props {
@@ -81,12 +85,12 @@ interface Props {
 export function ChatPanel({
   messages,
   recording,
-  connected,
+  connected: _connected,
   canAnalyze,
   onToggleRecording,
   onClear,
   onAnalyze,
-  scenario
+  scenario,
 }: Props) {
   const styles = useStyles()
 
@@ -94,33 +98,46 @@ export function ChatPanel({
     <Card className={styles.card}>
       {scenario && (
         <div className={styles.header}>
-          <Text size={500} weight="semibold" block>{scenario.name}</Text>
-          <Text size={300} block className={styles.headerDescription}>{scenario.description}</Text>
+          <Text size={500} weight="semibold" block>
+            {scenario.name}
+          </Text>
+          <Text size={300} block className={styles.headerDescription}>
+            {scenario.description}
+          </Text>
         </div>
       )}
 
       <div className={styles.messages}>
         {messages.length === 0 ? (
           <div className={styles.placeholder}>
-            <Text size={300} weight="semibold">Get started</Text>
-            <Text size={200}>Click "Start Recording" to begin the conversation.</Text>
+            <Text size={300} weight="semibold">
+              Get started
+            </Text>
+            <Text size={200}>
+              Click "Start Recording" to begin the conversation.
+            </Text>
           </div>
         ) : (
           <>
-            {messages.slice().reverse().map(msg => (
-              <div
-                key={msg.id}
-                className={`${styles.message} ${
-                  msg.role === 'user' ? styles.userMessage : styles.assistantMessage
-                }`}
-              >
-                <Text size={300}>{msg.content}</Text>
-              </div>
-            ))}
+            {messages
+              .slice()
+              .reverse()
+              .map(msg => (
+                <div
+                  key={msg.id}
+                  className={`${styles.message} ${
+                    msg.role === 'user'
+                      ? styles.userMessage
+                      : styles.assistantMessage
+                  }`}
+                >
+                  <Text size={300}>{msg.content}</Text>
+                </div>
+              ))}
           </>
         )}
       </div>
-      
+
       <div className={styles.controls}>
         <Button
           appearance={recording ? 'primary' : 'secondary'}
@@ -129,15 +146,11 @@ export function ChatPanel({
         >
           {recording ? 'Stop Recording' : 'Start Recording'}
         </Button>
-        
-        <Button
-          appearance="subtle"
-          icon={<DeleteRegular />}
-          onClick={onClear}
-        >
+
+        <Button appearance="subtle" icon={<DeleteRegular />} onClick={onClear}>
           Clear
         </Button>
-        
+
         <Button
           appearance="primary"
           icon={<ChartMultipleRegular />}
