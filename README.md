@@ -114,7 +114,13 @@ npx prettier --write "src/**/*.{ts,tsx,js,jsx,json,css,md}"
    - Needs assessment
    - Value proposition delivery
    - Objection handling skills
-  
+
+## Architecture
+
+The following diagram shows the high-level architecture of VoiceLab Sales Trainer and how it integrates with various Azure AI services:
+
+![Architecture Diagram](assets/architecture.png)
+
 ## Contributing
 
 This is a demo application showcasing Azure AI capabilities. Feel free to fork and experiment!
