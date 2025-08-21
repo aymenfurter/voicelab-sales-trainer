@@ -34,7 +34,7 @@ services:
       - HOST=0.0.0.0
       - PORT=8000
     volumes:
-      # Mount .env file if it exists
+      # Mount .env file if it exists for local development
       - ./.env:/app/.env:ro
     restart: unless-stopped
     healthcheck:
@@ -43,3 +43,8 @@ services:
       timeout: 10s
       retries: 3
       start_period: 10s
+
+# Usage:
+# 1. Copy .env.docker to .env and update with your Azure credentials
+# 2. Run: docker-compose up --build
+# 3. Open http://localhost:8000
