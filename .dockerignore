@@ -26,14 +26,16 @@ assets/
 ehthumbs.db
 Thumbs.db
 
-# Dependencies
+# Dependencies (installed inside container)
 node_modules/
 .npm
 .yarn/
 
-# Build outputs (we copy these explicitly in Dockerfile)
+# Build outputs (built inside container) 
 dist/
 build/
+static/js/
+static/assets/
 
 # Logs
 *.log
@@ -53,7 +55,7 @@ coverage/
 *.lcov
 .nyc_output
 
-# Environment files
+# Environment files (use docker-compose or --env-file)
 .env*
 !.env.example
 
@@ -85,3 +87,8 @@ venv.bak/
 # Linting cache
 .eslintcache
 .stylelintcache
+
+# Docker files (don't include in build context)
+Dockerfile*
+docker-compose*.yml
+.dockerignore
