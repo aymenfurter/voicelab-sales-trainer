@@ -13,7 +13,7 @@ services:
       - PROJECT_ENDPOINT=${PROJECT_ENDPOINT:-}
       - MODEL_DEPLOYMENT_NAME=${MODEL_DEPLOYMENT_NAME:-gpt-4o}
       - AZURE_AI_RESOURCE_NAME=${AZURE_AI_RESOURCE_NAME:-}
-      - AZURE_AI_REGION=${AZURE_AI_REGION:-eastus2}
+      - AZURE_AI_REGION=${AZURE_AI_REGION:-swedencentral}
       - AZURE_AI_PROJECT_NAME=${AZURE_AI_PROJECT_NAME:-}
       - AGENT_ID=${AGENT_ID:-}
       
@@ -23,7 +23,7 @@ services:
       
       # Azure Speech Services
       - AZURE_SPEECH_KEY=${AZURE_SPEECH_KEY:-}
-      - AZURE_SPEECH_REGION=${AZURE_SPEECH_REGION:-eastus}
+      - AZURE_SPEECH_REGION=${AZURE_SPEECH_REGION:-swedencentral}
       
       # Azure Subscription Info
       - SUBSCRIPTION_ID=${SUBSCRIPTION_ID:-}

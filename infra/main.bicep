@@ -7,7 +7,7 @@ param environmentName string
 
 @minLength(1)
 @description('Primary location for all resources')
-param location string = 'eastus'
+param location string = 'swedencentral'
 
 @description('Id of the user or app to assign application roles')
 param principalId string = ''

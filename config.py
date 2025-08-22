@@ -18,7 +18,7 @@ class Config:
         """Load configuration from environment variables with defaults."""
         config = {
             "azure_ai_resource_name": os.getenv("AZURE_AI_RESOURCE_NAME", ""),
-            "azure_ai_region": os.getenv("AZURE_AI_REGION", "eastus2"),
+            "azure_ai_region": os.getenv("AZURE_AI_REGION", "swedencentral"),
             "azure_ai_project_name": os.getenv("AZURE_AI_PROJECT_NAME", ""),
             "project_endpoint": os.getenv("PROJECT_ENDPOINT", ""),
             "use_azure_ai_agents": os.getenv("USE_AZURE_AI_AGENTS", "false").lower()
@@ -32,7 +32,7 @@ class Config:
             "subscription_id": os.getenv("SUBSCRIPTION_ID", ""),
             "resource_group_name": os.getenv("RESOURCE_GROUP_NAME", ""),
             "azure_speech_key": os.getenv("AZURE_SPEECH_KEY", ""),
-            "azure_speech_region": os.getenv("AZURE_SPEECH_REGION", "eastus"),
+            "azure_speech_region": os.getenv("AZURE_SPEECH_REGION", "swedencentral"),
         }
         return config
 

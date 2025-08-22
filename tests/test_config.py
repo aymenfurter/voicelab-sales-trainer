@@ -15,7 +15,7 @@ class TestConfig:
             config = Config()
             assert config["port"] == 8000
             assert config["host"] == "0.0.0.0"
-            assert config["azure_ai_region"] == "eastus2"
+            assert config["azure_ai_region"] == "swedencentral"
 
     def test_config_with_environment_variables(self):
         """Test that config loads from environment variables."""
