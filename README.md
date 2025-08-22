@@ -100,22 +100,16 @@ Visit `http://localhost:8000` to start training!
 
 ## Quick Start with Azure Developer CLI
 
-1. **Clone and navigate to the repository**:
-   ```bash
-   git clone <your-repo-url>
-   cd upskilling-agent
-   ```
-
-2. **Initialize Azure Developer CLI**:
+1. **Initialize Azure Developer CLI**:
    ```bash
    azd init
    ```
 
-3. **Deploy to Azure**:
+2. **Deploy to Azure**:
    ```bash
    azd up
    ```
-4. **Access your application**:
+3. **Access your application**:
    The deployment will output the URL where your application is running.
 
 
