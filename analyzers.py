@@ -28,9 +28,10 @@ class ConversationAnalyzer:
         Args:
             scenario_dir: Directory containing evaluation scenario files
         """
-        self.scenario_dir = scenario_dir or Path(
-            "/workspaces/upskilling-agent/scenarios"
-        )
+        if scenario_dir is None:
+            self.scenario_dir = Path(__file__).parent / "scenarios"
+        else:
+            self.scenario_dir = scenario_dir
         self.evaluation_scenarios = self._load_evaluation_scenarios()
         self.openai_client = self._initialize_openai_client()
 

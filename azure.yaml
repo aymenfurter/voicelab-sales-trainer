@@ -1,0 +1,12 @@
+name: voicelab-sales-training
+metadata:
+  template: azd-init@1.18.1
+infra:
+  provider: bicep
+  path: infra
+  module: main
+
+resources:
+  voicelab-sales-training:
+    type: host.containerapp
+    port: 8000

@@ -69,6 +69,27 @@ VoiceLab Sales Trainer is a demo application showcasing how AI-based training co
 
 Visit `http://localhost:8000` to start training!
 
+## Quick Start with Azure Developer CLI
+
+1. **Clone and navigate to the repository**:
+   ```bash
+   git clone <your-repo-url>
+   cd upskilling-agent
+   ```
+
+2. **Initialize Azure Developer CLI**:
+   ```bash
+   azd init
+   ```
+
+3. **Deploy to Azure**:
+   ```bash
+   azd up
+   ```
+4. **Access your application**:
+   The deployment will output the URL where your application is running.
+
+
 ## Development
 
 ### Code Quality & Linting

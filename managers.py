@@ -61,9 +61,11 @@ class ScenarioManager:
         Args:
             scenario_dir: Directory containing scenario YAML files
         """
-        self.scenario_dir = scenario_dir or Path(
-            "/workspaces/upskilling-agent/scenarios"
-        )
+        if scenario_dir is None:
+            self.scenario_dir = Path(__file__).parent / "scenarios"
+        else:
+            self.scenario_dir = scenario_dir
+
         self.scenarios = self._load_scenarios()
 
     def _load_scenarios(self) -> Dict[str, Any]:
