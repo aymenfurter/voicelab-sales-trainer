@@ -134,7 +134,7 @@ class ConversationAnalyzer:
             completion = await asyncio.get_event_loop().run_in_executor(
                 None,
                 lambda: self.openai_client.chat.completions.create(
-                    model="gpt-5",
+                    model="gpt-4o",
                     messages=[
                         {
                             "role": "system",

@@ -6,7 +6,7 @@ param principalId string = ''
 
 // Model deployment parameters
 param gptModelName string = 'gpt-4o'
-param gptModelVersion string = '2024-05-13'
+param gptModelVersion string = '2024-08-06'
 param gptDeploymentName string = 'gpt-4o'
 
 param openAiModelDeployments array = [
@@ -15,7 +15,7 @@ param openAiModelDeployments array = [
     model: gptModelName
     version: gptModelVersion
     sku: {
-      name: 'GlobalStandard'
+      name: 'Standard'
       capacity: 10
     }
   }
@@ -29,7 +29,7 @@ param openAiModelDeployments array = [
   }
 ]
 
-var resourceToken = toLower(uniqueString(subscription().id, environmentName, 'eastus'))
+var resourceToken = toLower(uniqueString(subscription().id, environmentName, 'swedencentral'))
 var tags = { 'azd-env-name': environmentName }
 // Ensure container app name <= 32 chars (prefix 'vst-' + full token which is 13 chars = 17 total)
 var containerAppName = 'vst-${resourceToken}'
@@ -37,7 +37,7 @@ var containerAppName = 'vst-${resourceToken}'
 // AI Foundry Resource Deployment (CognitiveServices account with AIServices)
 resource aiFoundryResource 'Microsoft.CognitiveServices/accounts@2024-10-01' = {
   name: 'aifoundry-voicelab-${resourceToken}'
-  location: 'eastus'
+  location: 'swedencentral'
   tags: tags
   kind: 'AIServices'
   sku: {
@@ -75,7 +75,7 @@ resource aiFoundryResource 'Microsoft.CognitiveServices/accounts@2024-10-01' = {
 // Speech Services for pronunciation assessment
 resource speechService 'Microsoft.CognitiveServices/accounts@2024-10-01' = {
   name: 'speech-voicelab-${resourceToken}'
-  location: 'eastus'
+  location: 'swedencentral'
   tags: tags
   kind: 'SpeechServices'
   sku: {
@@ -90,7 +90,7 @@ resource speechService 'Microsoft.CognitiveServices/accounts@2024-10-01' = {
 // Container Apps Environment
 resource containerAppsEnvironment 'Microsoft.App/managedEnvironments@2024-03-01' = {
   name: 'cae-voicelab-${resourceToken}'
-  location: 'eastus'
+  location: 'swedencentral'
   tags: tags
   properties: {}
 }
@@ -98,7 +98,7 @@ resource containerAppsEnvironment 'Microsoft.App/managedEnvironments@2024-03-01'
 // Container App
 resource containerApp 'Microsoft.App/containerApps@2024-03-01' = {
   name: containerAppName
-  location: 'eastus'
+  location: 'swedencentral'
   tags: union(tags, { 'azd-service-name': 'voicelab-sales-training' })
   identity: {
     type: 'SystemAssigned'
@@ -154,7 +154,7 @@ resource containerApp 'Microsoft.App/containerApps@2024-03-01' = {
             }
             {
               name: 'AZURE_SPEECH_REGION'
-              value: 'eastus'
+              value: 'swedencentral'
             }
             {
               name: 'AZURE_AI_RESOURCE_NAME'
@@ -162,7 +162,7 @@ resource containerApp 'Microsoft.App/containerApps@2024-03-01' = {
             }
             {
               name: 'AZURE_AI_REGION'
-              value: 'eastus'
+              value: 'swedencentral'
             }
             {
               name: 'SUBSCRIPTION_ID'
@@ -246,6 +246,9 @@ resource userCognitiveServicesOpenAIUserRole 'Microsoft.Authorization/roleAssign
   }
 }
 
+// NOTE: All resources are intentionally fixed to region 'swedencentral'. Subscription deployment
+// location must be provided via azd env variable AZURE_LOCATION=swedencentral.
+
 // Outputs
 output AZURE_CONTAINER_APP_ENVIRONMENT_NAME string = containerAppsEnvironment.name
 output AZURE_CONTAINER_APP_NAME string = containerApp.name
@@ -255,7 +258,5 @@ output AZURE_SUBSCRIPTION_ID string = subscription().subscriptionId
 output CONTAINER_APP_IDENTITY_PRINCIPAL_ID string = containerApp.identity.principalId
 output PROJECT_ENDPOINT string = '${aiFoundryResource.properties.endpoint}api/projects/default-project'
 output AZURE_OPENAI_ENDPOINT string = aiFoundryResource.properties.endpoint
-output AZURE_SPEECH_REGION string = 'eastus'
+output AZURE_SPEECH_REGION string = 'swedencentral'
 output AI_FOUNDRY_RESOURCE_NAME string = aiFoundryResource.name
-output GPT_DEPLOYMENT_NAME string = gptDeploymentName
-output GPT_MODEL_NAME string = gptModelName

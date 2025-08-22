@@ -9,7 +9,7 @@ from typing import Optional
 import websockets
 
 from config import config
-from managers import TokenManager, AgentManager
+from managers import AgentManager
 
 logger = logging.getLogger(__name__)
 
@@ -17,15 +17,15 @@ logger = logging.getLogger(__name__)
 class VoiceProxyHandler:
     """Handles WebSocket proxy connections between client and Azure Voice API."""
 
-    def __init__(self, token_manager: TokenManager, agent_manager: AgentManager):
+    def __init__(self, token_manager, agent_manager: AgentManager):
         """
         Initialize the voice proxy handler.
 
         Args:
-            token_manager: Token manager instance
+            token_manager: Token manager instance (kept for compatibility but not used)
             agent_manager: Agent manager instance
         """
-        self.token_manager = token_manager
+        # Keep token_manager parameter for compatibility but don't use it
         self.agent_manager = agent_manager
 
     async def handle_connection(self, client_ws) -> None:
@@ -83,12 +83,20 @@ class VoiceProxyHandler:
     ) -> Optional[websockets.WebSocketClientProtocol]:
         """Connect to Azure Voice API with appropriate configuration."""
         try:
-            token = self.token_manager.get_token()
             agent_config = self.agent_manager.get_agent(agent_id) if agent_id else None
 
-            azure_url = self._build_azure_url(token, agent_id, agent_config)
+            azure_url = self._build_azure_url(agent_id, agent_config)
+            
+            api_key = config.get("azure_openai_api_key")
+            if not api_key:
+                logger.error("No API key found in configuration (azure_openai_api_key)")
+                return None
 
-            azure_ws = await websockets.connect(azure_url)
+            headers = {
+                "api-key": api_key
+            }
+
+            azure_ws = await websockets.connect(azure_url, extra_headers=headers)
             logger.info(
                 f"Connected to Azure Voice API with agent: {agent_id or 'default'}"
             )
@@ -102,7 +110,7 @@ class VoiceProxyHandler:
             return None
 
     def _build_azure_url(
-        self, token: str, agent_id: Optional[str], agent_config: Optional[dict]
+        self, agent_id: Optional[str], agent_config: Optional[dict]
     ) -> str:
         """Build the Azure WebSocket URL."""
         base_url = (
@@ -110,17 +118,16 @@ class VoiceProxyHandler:
             f"voice-agent/realtime?api-version=2025-05-01-preview"
             f"&x-ms-client-request-id={uuid.uuid4()}"
             f"&agent-project-name={config['azure_ai_project_name']}"
-            f"&agent-access-token={token}&Authorization=Bearer+{token}"
         )
 
         if agent_config:
             if agent_config.get("is_azure_agent"):
-                return f"{base_url}&agent_id={agent_id}"
+                return f"{base_url}&agent-id={agent_id}"
             else:
                 model_name = agent_config.get("model", config["model_deployment_name"])
                 return f"{base_url}&model={model_name}"
         elif config["agent_id"]:
-            return f"{base_url}&agent_id={config['agent_id']}"
+            return f"{base_url}&agent-id={config['agent_id']}"
         else:
             model_name = config["model_deployment_name"]
             return f"{base_url}&model={model_name}"
