@@ -36,6 +36,35 @@ VoiceLab Sales Trainer is a demo application showcasing how AI-based training co
 
 ## Installation
 
+### Option 1: Docker (Recommended)
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/aymenfurter/voicelab-sales-trainer.git
+   cd voicelab-sales-trainer
+   ```
+
+2. **Set up environment variables**
+   ```bash
+   cp .env.example .env
+   # Edit .env with your Azure credentials
+   ```
+
+3. **Run with Docker Compose**
+   ```bash
+   docker-compose up --build
+   ```
+
+4. **Or run with Docker directly**
+   ```bash
+   docker build -t voicelab-sales-trainer .
+   docker run -p 8000:8000 --env-file .env voicelab-sales-trainer
+   ```
+
+Visit `http://localhost:8000` to start training!
+
+### Option 2: Local Development
+
 1. **Clone the repository**
    ```bash
    git clone https://github.com/aymenfurter/voicelab-sales-trainer.git

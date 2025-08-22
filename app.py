@@ -2,6 +2,7 @@
 
 import asyncio
 import logging
+import os
 from flask import Flask, jsonify, render_template, request, send_from_directory
 from flask_sock import Sock
 
@@ -166,10 +167,12 @@ def voice_proxy(ws):
 def main():
     """Run the Flask application."""
     print(f"Starting Voice Live Demo on http://{config['host']}:{config['port']}")
+    # Check if we're running in development mode based on environment
+    debug_mode = os.getenv("FLASK_ENV") == "development"
     app.run(
         host=config["host"],
         port=config["port"],
-        debug=True,
+        debug=debug_mode,
     )
 
 
